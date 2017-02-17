@@ -1,5 +1,6 @@
 # https://www.tensorflow.org/get_started/mnist/beginners
 
+from PIL import Image
 from tensorflow.examples.tutorials.mnist import input_data
 mnist = input_data.read_data_sets("MNIST_data/", one_hot=True)
 
@@ -28,3 +29,11 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 # read-out
 print(sess.run(accuracy, feed_dict={x:mnist.test.images, y_:mnist.test.labels}))
+
+# Very basic visualisation of the learned weights
+# http://pillow.readthedocs.io/en/4.0.x/
+image_node = 127 + (W * 100) # calculation node that gets our image into a 0..255 range centred on 127
+img_size = (280,28) # MNIST image sizes
+img = Image.frombuffer('F', img_size, sess.run(image_node)).convert('RGB')
+img.save('./my.png')
+#img.show()
